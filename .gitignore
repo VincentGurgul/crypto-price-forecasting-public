@@ -1,0 +1,24 @@
+# ignore all .DS_Store files
+*.DS_Store
+
+# ignore all py-cache files
+*.pyc
+
+# ignore all jupyter checkpoints
+*.ipynb_checkpoints
+
+# ignore my .git file
+.git
+
+# ignore all log files
+*.log
+
+# ignore all old_code
+old_code/
+
+# ignore all W&B logs
+wandb/
+
+# ignore all data files due to GitHub storage limit
+*.parquet.gzip
+*.csv

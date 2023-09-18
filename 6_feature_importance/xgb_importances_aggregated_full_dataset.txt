@@ -1,0 +1,33 @@
+XGBoost feature importances by Cryptocurrency (aggregated)
+
+----------------
+Coin: BTC
+----------------
+
+Technical indicators: total_gain=0.30324341587028, avg_gain=0.33835563872217445
+Account balance data: total_gain=0.19933544252114488, avg_gain=0.12920167217815776
+Exchange volume data: total_gain=0.12176694694325116, avg_gain=0.17834207030276267
+Technical blockchain metrics: total_gain=0.08211348917795268, avg_gain=0.06008037196377679
+NLP data: total_gain=0.06449098193576115, avg_gain=0.062229335358957014
+Numeric social media data: total_gain=0.05357922395488557, avg_gain=0.05460038726104747
+GitHub metrics: total_gain=0.0492099646267025, avg_gain=0.07550252195325559
+Google Trends: total_gain=0.0425540194487043, avg_gain=0.02721782420395383
+Transaction data: total_gain=0.04111204970249319, avg_gain=0.022200179326951355
+Financial data: total_gain=0.033505374291115816, avg_gain=0.045409050064750295
+Past price data: total_gain=0.009089091527708778, avg_gain=0.006860948664212801
+
+
+----------------
+Coin: ETH
+----------------
+
+Technical indicators: total_gain=0.3506649710221625, avg_gain=0.38751673233545403
+Exchange volume data: total_gain=0.18958252263174846, avg_gain=0.2087068292243618
+NLP data: total_gain=0.0938696459571969, avg_gain=0.07879410857828895
+Numeric social media data: total_gain=0.07855347776588589, avg_gain=0.061725276363952385
+Technical blockchain metrics: total_gain=0.07821201205203024, avg_gain=0.056939440075254186
+GitHub metrics: total_gain=0.07757781249681958, avg_gain=0.07786998567229018
+Google Trends: total_gain=0.04801381177452815, avg_gain=0.04304899041755825
+Financial data: total_gain=0.03783628456230538, avg_gain=0.05026542533368587
+Transaction data: total_gain=0.029797534130358766, avg_gain=0.025008120008175476
+Past price data: total_gain=0.015891927606964153, avg_gain=0.010125091990978875
