@@ -7,7 +7,7 @@ Submission date: September 14, 2023
 
 This repository encompasses the code for the processing, exploratory data analysis, model training and evaluation as well as related utilities and documentation for the forecasting of cryptocurrency prices using various deep learning and natural language processing techniques. Furthermore, it contains the master thesis itself and the presentation slides from the European Conference on Data Analysis (DSSV-ECDA 2023) where the results were presented.
 
-Note: The data themselves are missing due to GitHub storage limit.
+Note: The data themselves are missing due to the GitHub storage limit.
 
 
 ## Structure
