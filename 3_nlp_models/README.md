@@ -5,7 +5,6 @@ This directory contains the code for the three NLP models utilised in the master
 ## Contents
 
 ```
-.
 ├── 1_twitter_roberta_pretrained
 │    └── main.py: Code for extracting sentiment scores with Twitter-RoBERTa-Base (version from 25.01.2023)
 ├── 2_bart_zero_shot

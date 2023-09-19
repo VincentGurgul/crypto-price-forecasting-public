@@ -6,7 +6,6 @@ This directory is dedicated to training and evaluating the various time series m
 ## Contents
 
 ```
-.
 ├── adaboost
 │    └── main
 │        ├── adb_functions.py: Utility functions for Adaboost model.
@@ -36,6 +35,11 @@ This directory is dedicated to training and evaluating the various time series m
 │    │    ├── main.py: Main code for implementing the OLS model.
 │    │    └── ols_functions.py: Utility functions specific to OLS model.
 │    └── plot_performance.ipynb: Notebook to plot the performance of OLS model.
+├── plotting
+│   ├── plot_crossvalidation.ipynb: Notebook for visualising cross-validation.
+│   ├── plotting_functions.py: General plotting utilities.
+│   ├── profit_by_fold.ipynb: Notebook analysing potential profit by cross-validation fold.
+│   └── summary_barplots_final.ipynb: Notebook for summarising results in bar plots.
 ├── random_forest
 │    ├── causality_tuning
 │    │    ├── causality_functions.py: Functions related to causality tuning.

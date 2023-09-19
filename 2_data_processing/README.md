@@ -5,7 +5,6 @@ This section focuses on processing both numerical and textual data to prepare th
 ## Contents
 
 ```
-.
 ├── numeric_data
 │    ├── 0_technical_indicators.ipynb: Extracts technical indicators from raw numeric data.
 │    ├── 1_data_preprocessing.ipynb: General preprocessing tasks like normalization, missing data handling, etc.

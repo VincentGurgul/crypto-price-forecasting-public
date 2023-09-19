@@ -6,7 +6,6 @@ This directory contains scripts for the assessment of the feature importance usi
 ## Contents
 
 ```
-.
 ├── btc_causal_variables.txt: Variables that have a causal relationship with the daily price fluctuations of Bitcoin.
 ├── eth_causal_variables.txt: Variables that have a causal relationship with the daily price fluctuations of Ethereum.
 ├── config.py: Optimal configuration settings for XGBoost determined during hyperparameter optimisation.

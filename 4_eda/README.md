@@ -5,7 +5,6 @@ This directory contains various notebooks and scripts dedicated to the explorato
 ## Contents
 
 ```
-.
 ├── 1_numeric_eda.ipynb: Initial exploratory analysis of numeric data.
 ├── 2_nlp_eda.ipynb: Exploratory analysis focused on the NLP datasets.
 ├── 3_seasonality_decomp.ipynb: Seasonality decomposition of the time-series data.

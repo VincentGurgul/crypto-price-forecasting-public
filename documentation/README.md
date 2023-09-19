@@ -5,7 +5,6 @@ This directory provides detailed insights into the data and the results generate
 ## Contents
 
 ```
-.
 ├── btc_data_docs.pdf: Documentation describing the Bitcoin variables, data sources, and transformation methods.
 ├── eth_data_docs.pdf: Documentation describing the Ethereum variables, data sources, and transformation methods.
 └── model_results.pdf: A comprehensive report of the results obtained from the various time series models used in this research.

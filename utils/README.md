@@ -1,3 +1,3 @@
 # Utilities directory
 
-Utility scripts and helper functions used throughout the project.
+Utility scripts and wrappers used throughout the project.
