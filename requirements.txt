@@ -26,7 +26,6 @@ scipy==1.11.2
 seaborn==0.12.2
 snscrape==0.6.2.20230320
 statsmodels==0.14.0
-stem==1.8.1
 ta==0.10.2
 tensorflow==2.13.0
 termcolor==2.3.0
