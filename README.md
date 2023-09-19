@@ -12,27 +12,20 @@ Note: The data themselves are missing due to GitHub storage limit.
 
 ## Structure
 
-The repository contains the following directories:
-
-- <code>1_data_acquisition</code>: Scripts used to acquire the data used in the thesis. This folder is not shared publicly since the code contains passwords and API keys.
-
-- <code>2_data_processing</code>: Scripts for preprocessing and cleaning of the data acquired in the previous step. This includes stationarity analysis and target variable engineering.
-
-- <code>3_nlp_models</code>: Scripts for fine-tuning and applying the large language models used for NLP, as well as post-processing the acquired scores.
-
-- <code>4_eda</code>: Directory containing EDA of numeric and textual data, as well as the Granger causality analysis.
-
-- <code>5_time_series_models</code>: Scripts used to train and evaluate the time series models.
-
-- <code>6_feature_importance</code>: Assessment of the feature importance using an XGBoost model trained on daily price fluctuations.
-  
-- <code>documentation</code>: Documentation complementing the dataset and the code. This includes an overview and explanation of all features and a complete, disaggregated presentation of the results.
-  
-- <code>dssv_slides</code>: LaTeX code for the presentation at the DSSV-ECDA 2023 conference.
-  
-- <code>thesis</code>: LaTeX code for the thesis that was submitted.
-  
-- <code>utils</code>: Utility scripts and helper functions used throughout the project.
+```
+├── 1_data_acquisition: Scripts used to acquire the data used in the thesis. This folder is not shared publicly since the code contains passwords and API keys.
+├── 2_data_processing: Scripts for preprocessing and cleaning of the data acquired in the previous step. This includes stationarity analysis and target variable engineering.
+├── 3_nlp_models: Scripts for fine-tuning and applying the large language models used for NLP, as well as post-processing the acquired scores.
+├── 4_eda: Directory containing EDA of numeric and textual data, as well as the Granger causality analysis.
+├── 5_time_series_models: Scripts used to train and evaluate the time series models.
+├── 6_feature_importance: Assessment of the feature importance using an XGBoost model trained on daily price fluctuations.
+├── documentation: Documentation complementing the dataset and the code. This includes an overview and explanation of all features and a complete, disaggregated presentation of the results.
+├── utils: Utility scripts and helper functions used throughout the project.
+├── dssv_slides.pdf: Presentation slides from the European Conference on Data Analysis (DSSV-ECDA 2023).
+├── master_thesis.pdf: The master thesis that was submitted.
+├── README.md: This readme file.
+└── requirements.txt: The required Python packages.
+```
 
 ## Requirements
 
