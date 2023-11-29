@@ -9,6 +9,8 @@ This repository encompasses the code for the processing, exploratory data analys
 
 Note: The data themselves are missing due to the GitHub storage limit.
 
+The resulting publication can be accessed on ArXiv: https://arxiv.org/abs/2311.14759
+
 
 ## Structure
 
