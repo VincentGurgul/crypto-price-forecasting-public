@@ -13,7 +13,7 @@ from argparse import ArgumentParser
 from sklearn.neural_network import MLPRegressor, MLPClassifier
 from functions import *
 
-from utils.wrappers import timeit, telegram_notify
+from utils.wrappers import timeit, telegram_notify, retry
 
 
 @timeit
@@ -21,6 +21,7 @@ from utils.wrappers import timeit, telegram_notify
 def hyperparameter_opt_mlp():
     
     modes = [
+        'causal_stationary_vader',
         'causal_stationary_nlp_pretrained',
         'causal_stationary_twitter_roberta',
         'causal_stationary_bart_mnli',
@@ -75,6 +76,19 @@ def hyperparameter_opt_mlp():
         'random_state': 42,
     }
     
+    PROJECT_NAME=f'Crypto MLP {args.mode}'
+    
+
+    @retry(10, 100) # retries W&B initialisation to avoid timeout
+    def retry_init(group, config=None, reinit=True, **kwargs):
+        
+        wandb.init(project=PROJECT_NAME,
+                   config=config,
+                   group=group,
+                   reinit=reinit,
+                   **kwargs)
+
+
     for coin in ('btc', 'eth'):
         
         cv_config = {
@@ -113,46 +127,57 @@ def hyperparameter_opt_mlp():
             X = data[price_log_difference_vars]
             columns_to_keep = [
                 col for col in X.columns
-                if 'bart_mnli' not in col and 'roberta' not in col
+                if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
+            ]
+            X = X[columns_to_keep]
+        elif args.mode == 'causal_stationary_vader':
+            X = data[price_log_difference_vars]
+            columns_to_keep = [
+                col for col in X.columns
+                if all(i not in col for i in ['bart_mnli', 'roberta'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_twitter_roberta':
             X = data[price_log_difference_vars]
             columns_to_keep = [
                 col for col in X.columns
-                if 'finetuned' not in col and 'bart_mnli' not in col
+                if all(i not in col for i in ['finetuned', 'bart_mnli', 'vader'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_bart_mnli':
             X = data[price_log_difference_vars]
             columns_to_keep = [
-                col for col in X.columns if 'roberta' not in col
+                col for col in X.columns
+                if all(i not in col for i in ['roberta', 'vader'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_nlp_pretrained':
             X = data[price_log_difference_vars]
             columns_to_keep = [
-                col for col in X.columns if 'finetuned' not in col
+                col for col in X.columns
+                if all(i not in col for i in ['finetuned', 'vader'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_nlp_finetuned':
             X = data[price_log_difference_vars]
             columns_to_keep = [
                 col for col in X.columns
-                if 'bart_mnli' not in col and 'roberta_pretrained' not in col
+                if all(i not in col for i in ['bart_mnli', 'roberta_pretrained', 'vader'])
             ]
             X = X[columns_to_keep]
+        elif args.mode == 'causal_stationary_full_data':
+            X = data[price_log_difference_vars]
         else:
             columns_to_keep = [
                 col for col in data.columns
-                if 'bart_mnli' not in col and 'roberta' not in col
+                if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
             ]
             X = data[columns_to_keep]
 
         y = targets[f'{coin}_price_log_difference']
 
         for problem in ('regression', 'classification'):
-            
+
             # specify model and configuration for cross validation
             if problem == 'regression':
                 model = MLPRegressor
@@ -204,12 +229,7 @@ def hyperparameter_opt_mlp():
                     **model_config,
                     **cv_config,
                 }
-                wandb.init(
-                    project=f'Crypto MLP {args.mode}',
-                    config=log_config,
-                    group=STUDY_NAME,
-                    reinit=True,
-                )
+                retry_init(group=STUDY_NAME, config=log_config)
                 try:
                     result = crossvalidate_movement(
                         classifier_obj,
@@ -250,10 +270,7 @@ def hyperparameter_opt_mlp():
             try:
                 param_importances = optuna.visualization.plot_param_importances(study)
                 optimization_history = optuna.visualization.plot_optimization_history(study)
-                wandb.init(
-                    project=f'Crypto MLP {args.mode}',
-                    group=STUDY_NAME,
-                )
+                retry_init(group=STUDY_NAME)
                 wandb.log({
                     'param_importances': param_importances,
                     'optimization_history': optimization_history,
@@ -276,6 +293,10 @@ def hyperparameter_opt_mlp():
                 f.write('\n' + output)
 
         for timeframe in (7, 14, 21):
+            
+            # Set configuration for cross validation
+            cv_config['cutoff_tuning'] = True
+            cv_config['tuning_method'] = 'accuracy'
 
             if args.mode == 'causal_nonstationary':
                 with open(f'../../../4_eda/{coin}_causality_nonstat/{coin}_price_min_{timeframe}d_causality.txt') as f:
@@ -294,12 +315,25 @@ def hyperparameter_opt_mlp():
                 X_max = data[price_max_vars]
                 columns_to_keep = [
                     col for col in X_min.columns
-                    if 'bart_mnli' not in col and 'roberta' not in col
+                    if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
                 ]
                 X_min = X_min[columns_to_keep]
                 columns_to_keep = [
                     col for col in X_max.columns
-                    if 'bart_mnli' not in col and 'roberta' not in col
+                    if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
+                ]
+                X_max = X_max[columns_to_keep]
+            elif args.mode == 'causal_stationary_vader':
+                X_min = data[price_min_vars]
+                X_max = data[price_max_vars]
+                columns_to_keep = [
+                    col for col in X_min.columns
+                    if all(i not in col for i in ['bart_mnli', 'roberta'])
+                ]
+                X_min = X_min[columns_to_keep]
+                columns_to_keep = [
+                    col for col in X_max.columns
+                    if all(i not in col for i in ['bart_mnli', 'roberta'])
                 ]
                 X_max = X_max[columns_to_keep]
             elif args.mode == 'causal_stationary_twitter_roberta':
@@ -307,34 +341,38 @@ def hyperparameter_opt_mlp():
                 X_max = data[price_max_vars]
                 columns_to_keep = [
                     col for col in X_min.columns
-                    if 'finetuned' not in col and 'bart_mnli' not in col
+                    if all(i not in col for i in ['finetuned', 'bart_mnli', 'vader'])
                 ]
                 X_min = X_min[columns_to_keep]
                 columns_to_keep = [
                     col for col in X_max.columns
-                    if 'finetuned' not in col and 'bart_mnli' not in col
+                    if all(i not in col for i in ['finetuned', 'bart_mnli', 'vader'])
                 ]
                 X_max = X_max[columns_to_keep]
             elif args.mode == 'causal_stationary_bart_mnli':
                 X_min = data[price_min_vars]
                 X_max = data[price_max_vars]
                 columns_to_keep = [
-                    col for col in X_min.columns if 'roberta' not in col
+                    col for col in X_max.columns
+                    if all(i not in col for i in ['roberta', 'vader'])
                 ]
                 X_min = X_min[columns_to_keep]
                 columns_to_keep = [
-                    col for col in X_max.columns if 'roberta' not in col
+                    col for col in X_max.columns
+                    if all(i not in col for i in ['roberta', 'vader'])
                 ]
                 X_max = X_max[columns_to_keep]
             elif args.mode == 'causal_stationary_nlp_pretrained':
                 X_min = data[price_min_vars]
                 X_max = data[price_max_vars]
                 columns_to_keep = [
-                    col for col in X_min.columns if 'finetuned' not in col
+                    col for col in X_min.columns
+                    if all(i not in col for i in ['finetuned', 'vader'])
                 ]
                 X_min = X_min[columns_to_keep]
                 columns_to_keep = [
-                    col for col in X_max.columns if 'finetuned' not in col
+                    col for col in X_min.columns
+                    if all(i not in col for i in ['finetuned', 'vader'])
                 ]
                 X_max = X_max[columns_to_keep]
             elif args.mode == 'causal_stationary_nlp_finetuned':
@@ -342,18 +380,18 @@ def hyperparameter_opt_mlp():
                 X_max = data[price_max_vars]
                 columns_to_keep = [
                     col for col in X_min.columns
-                    if 'bart_mnli' not in col and 'roberta_pretrained' not in col
+                    if all(i not in col for i in ['bart_mnli', 'roberta_pretrained', 'vader'])
                 ]
                 X_min = X_min[columns_to_keep]
                 columns_to_keep = [
                     col for col in X_max.columns
-                    if 'bart_mnli' not in col and 'roberta_pretrained' not in col
+                    if all(i not in col for i in ['bart_mnli', 'roberta_pretrained', 'vader'])
                 ]
                 X_max = X_max[columns_to_keep]
             else:
                 columns_to_keep = [
                     col for col in data.columns
-                    if 'bart_mnli' not in col and 'roberta' not in col
+                    if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
                 ]
                 X_min = data[columns_to_keep]
                 X_max = data[columns_to_keep]
@@ -409,12 +447,7 @@ def hyperparameter_opt_mlp():
                     **model_config,
                     **cv_config,
                 }
-                wandb.init(
-                    project=f'Crypto MLP {args.mode}',
-                    config=log_config,
-                    group=STUDY_NAME,
-                    reinit=True,
-                )
+                retry_init(group=STUDY_NAME, config=log_config)
                 try:
                     result = crossvalidate_extrema(
                         classifier_obj,
@@ -458,10 +491,7 @@ def hyperparameter_opt_mlp():
             try:
                 param_importances = optuna.visualization.plot_param_importances(study)
                 optimization_history = optuna.visualization.plot_optimization_history(study)
-                wandb.init(
-                    project=f'Crypto MLP {args.mode}',
-                    group=STUDY_NAME,
-                )
+                retry_init(group=STUDY_NAME)
                 wandb.log({
                     'param_importances': param_importances,
                     'optimization_history': optimization_history,

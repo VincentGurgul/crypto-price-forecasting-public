@@ -442,10 +442,14 @@ def crossvalidate_movement_lstm(model_args: dict,
             preds = pd.Series(preds, index=X.iloc[test_index].index)
 
         # calculate AUC ROC and accuracy
-        prediction_auc = metrics.roc_auc_score(
-            y_discrete.iloc[test_index], preds)
-        prediction_acc = metrics.accuracy_score(
-            y_discrete.iloc[test_index], preds)
+        try:
+            prediction_auc = metrics.roc_auc_score(
+                y_discrete.iloc[test_index], preds)
+            prediction_acc = metrics.accuracy_score(
+                y_discrete.iloc[test_index], preds)
+        except:
+            prediction_auc = np.nan
+            prediction_acc = np.nan
 
         # calculate profit
         profits = calculate_profit(price_data.iloc[test_index],
@@ -524,10 +528,14 @@ def crossvalidate_movement_lstm(model_args: dict,
                 preds = pd.Series(preds, index=X.iloc[test_index].index)
 
             # calculate AUC ROC and accuracy
-            prediction_auc = metrics.roc_auc_score(
-                y_discrete.iloc[test_index], preds)
-            prediction_acc = metrics.accuracy_score(
-                y_discrete.iloc[test_index], preds)
+            try:
+                prediction_auc = metrics.roc_auc_score(
+                    y_discrete.iloc[test_index], preds)
+                prediction_acc = metrics.accuracy_score(
+                    y_discrete.iloc[test_index], preds)
+            except:
+                prediction_auc = np.nan
+                prediction_acc = np.nan
 
             # calculate profit
             profits = calculate_profit(price_data.iloc[test_index],
@@ -681,10 +689,14 @@ def crossvalidate_extrema_lstm(model_args: dict,
         y_pred_max = pd.Series(y_pred_max, index=X_max.iloc[test_index].index)
         
         # calculate AUC ROC
-        min_prediction_auc = metrics.roc_auc_score(
-            y_min.iloc[test_index], y_pred_min)
-        max_prediction_auc = metrics.roc_auc_score(
-            y_max.iloc[test_index], y_pred_max)
+        try:
+            min_prediction_auc = metrics.roc_auc_score(
+                y_min.iloc[test_index], y_pred_min)
+            max_prediction_auc = metrics.roc_auc_score(
+                y_max.iloc[test_index], y_pred_max)
+        except:
+            min_prediction_auc = np.nan
+            max_prediction_auc = np.nan
         
         # discretise continuous predictions
         if cutoff_tuning and tuning_method != 'profit':
@@ -724,10 +736,14 @@ def crossvalidate_extrema_lstm(model_args: dict,
             max_cutoff = cutoff
 
         # calculate accuracy
-        min_prediction_acc = metrics.accuracy_score(
-            y_min.iloc[test_index], y_pred_min)
-        max_prediction_acc = metrics.accuracy_score(
-            y_max.iloc[test_index], y_pred_max)
+        try:
+            min_prediction_acc = metrics.accuracy_score(
+                y_min.iloc[test_index], y_pred_min)
+            max_prediction_acc = metrics.accuracy_score(
+                y_max.iloc[test_index], y_pred_max)
+        except:
+            min_prediction_acc = np.nan
+            max_prediction_acc = np.nan
 
         # concatinate min and max predictions
         y_pred_discrete = pd.DataFrame({
@@ -812,10 +828,14 @@ def crossvalidate_extrema_lstm(model_args: dict,
             y_pred_max = pd.Series(y_pred_max, index=X_max.iloc[test_index].index)
             
             # calculate AUC ROC
-            min_prediction_auc = metrics.roc_auc_score(
-                y_min.iloc[test_index], y_pred_min)
-            max_prediction_auc = metrics.roc_auc_score(
-                y_max.iloc[test_index], y_pred_max)
+            try:
+                min_prediction_auc = metrics.roc_auc_score(
+                    y_min.iloc[test_index], y_pred_min)
+                max_prediction_auc = metrics.roc_auc_score(
+                    y_max.iloc[test_index], y_pred_max)
+            except:
+                min_prediction_auc = np.nan
+                max_prediction_auc = np.nan
             
             # discretise continuous predictions
             if cutoff_tuning and tuning_method != 'profit':
@@ -855,10 +875,14 @@ def crossvalidate_extrema_lstm(model_args: dict,
                 max_cutoff = cutoff
 
             # calculate accuracy
-            min_prediction_acc = metrics.accuracy_score(
-                y_min.iloc[test_index], y_pred_min)
-            max_prediction_acc = metrics.accuracy_score(
-                y_max.iloc[test_index], y_pred_max)
+            try:
+                min_prediction_acc = metrics.accuracy_score(
+                    y_min.iloc[test_index], y_pred_min)
+                max_prediction_acc = metrics.accuracy_score(
+                    y_max.iloc[test_index], y_pred_max)
+            except:
+                min_prediction_acc = np.nan
+                max_prediction_acc = np.nan
 
             # concatinate min and max predictions
             y_pred_discrete = pd.DataFrame({
@@ -872,10 +896,10 @@ def crossvalidate_extrema_lstm(model_args: dict,
 
             # calculate profit
             profits = calculate_profit(price_data.iloc[test_index],
-                                    y_pred_discrete,
-                                    y_true_discrete,
-                                    prediction_type='extrema',
-                                    init_state=init_state)
+                                       y_pred_discrete,
+                                       y_true_discrete,
+                                       prediction_type='extrema',
+                                       init_state=init_state)
 
             if wandb_log:
                 wandb.log(data={'cv_fold_profit': profits[3]}, step=fold)

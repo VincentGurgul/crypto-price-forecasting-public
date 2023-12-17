@@ -25,6 +25,7 @@ from utils.wrappers import timeit, telegram_notify
 def hyperparameter_opt_lstm():
     
     modes = [
+        'causal_stationary_vader',
         'causal_stationary_nlp_pretrained',
         'causal_stationary_twitter_roberta',
         'causal_stationary_bart_mnli',
@@ -107,39 +108,48 @@ def hyperparameter_opt_lstm():
             X = data[price_log_difference_vars]
             columns_to_keep = [
                 col for col in X.columns
-                if 'bart_mnli' not in col and 'roberta' not in col
+                if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
+            ]
+            X = X[columns_to_keep]
+        elif args.mode == 'causal_stationary_vader':
+            X = data[price_log_difference_vars]
+            columns_to_keep = [
+                col for col in X.columns
+                if all(i not in col for i in ['bart_mnli', 'roberta'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_twitter_roberta':
             X = data[price_log_difference_vars]
             columns_to_keep = [
                 col for col in X.columns
-                if 'finetuned' not in col and 'bart_mnli' not in col
+                if all(i not in col for i in ['finetuned', 'bart_mnli', 'vader'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_bart_mnli':
             X = data[price_log_difference_vars]
             columns_to_keep = [
-                col for col in X.columns if 'roberta' not in col
+                col for col in X.columns
+                if all(i not in col for i in ['roberta', 'vader'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_nlp_pretrained':
             X = data[price_log_difference_vars]
             columns_to_keep = [
-                col for col in X.columns if 'finetuned' not in col
+                col for col in X.columns
+                if all(i not in col for i in ['finetuned', 'vader'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_nlp_finetuned':
             X = data[price_log_difference_vars]
             columns_to_keep = [
                 col for col in X.columns
-                if 'bart_mnli' not in col and 'roberta_pretrained' not in col
+                if all(i not in col for i in ['bart_mnli', 'roberta_pretrained', 'vader'])
             ]
             X = X[columns_to_keep]
         else:
             columns_to_keep = [
                 col for col in data.columns
-                if 'bart_mnli' not in col and 'roberta' not in col
+                if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
             ]
             X = data[columns_to_keep]
 
@@ -293,12 +303,25 @@ def hyperparameter_opt_lstm():
                 X_max = data[price_max_vars]
                 columns_to_keep = [
                     col for col in X_min.columns
-                    if 'bart_mnli' not in col and 'roberta' not in col
+                    if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
                 ]
                 X_min = X_min[columns_to_keep]
                 columns_to_keep = [
                     col for col in X_max.columns
-                    if 'bart_mnli' not in col and 'roberta' not in col
+                    if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
+                ]
+                X_max = X_max[columns_to_keep]
+            elif args.mode == 'causal_stationary_vader':
+                X_min = data[price_min_vars]
+                X_max = data[price_max_vars]
+                columns_to_keep = [
+                    col for col in X_min.columns
+                    if all(i not in col for i in ['bart_mnli', 'roberta'])
+                ]
+                X_min = X_min[columns_to_keep]
+                columns_to_keep = [
+                    col for col in X_max.columns
+                    if all(i not in col for i in ['bart_mnli', 'roberta'])
                 ]
                 X_max = X_max[columns_to_keep]
             elif args.mode == 'causal_stationary_twitter_roberta':
@@ -306,34 +329,38 @@ def hyperparameter_opt_lstm():
                 X_max = data[price_max_vars]
                 columns_to_keep = [
                     col for col in X_min.columns
-                    if 'finetuned' not in col and 'bart_mnli' not in col
+                    if all(i not in col for i in ['finetuned', 'bart_mnli', 'vader'])
                 ]
                 X_min = X_min[columns_to_keep]
                 columns_to_keep = [
                     col for col in X_max.columns
-                    if 'finetuned' not in col and 'bart_mnli' not in col
+                    if all(i not in col for i in ['finetuned', 'bart_mnli', 'vader'])
                 ]
                 X_max = X_max[columns_to_keep]
             elif args.mode == 'causal_stationary_bart_mnli':
                 X_min = data[price_min_vars]
                 X_max = data[price_max_vars]
                 columns_to_keep = [
-                    col for col in X_min.columns if 'roberta' not in col
+                    col for col in X_max.columns
+                    if all(i not in col for i in ['roberta', 'vader'])
                 ]
                 X_min = X_min[columns_to_keep]
                 columns_to_keep = [
-                    col for col in X_max.columns if 'roberta' not in col
+                    col for col in X_max.columns
+                    if all(i not in col for i in ['roberta', 'vader'])
                 ]
                 X_max = X_max[columns_to_keep]
             elif args.mode == 'causal_stationary_nlp_pretrained':
                 X_min = data[price_min_vars]
                 X_max = data[price_max_vars]
                 columns_to_keep = [
-                    col for col in X_min.columns if 'finetuned' not in col
+                    col for col in X_min.columns
+                    if all(i not in col for i in ['finetuned', 'vader'])
                 ]
                 X_min = X_min[columns_to_keep]
                 columns_to_keep = [
-                    col for col in X_max.columns if 'finetuned' not in col
+                    col for col in X_min.columns
+                    if all(i not in col for i in ['finetuned', 'vader'])
                 ]
                 X_max = X_max[columns_to_keep]
             elif args.mode == 'causal_stationary_nlp_finetuned':
@@ -341,18 +368,18 @@ def hyperparameter_opt_lstm():
                 X_max = data[price_max_vars]
                 columns_to_keep = [
                     col for col in X_min.columns
-                    if 'bart_mnli' not in col and 'roberta_pretrained' not in col
+                    if all(i not in col for i in ['bart_mnli', 'roberta_pretrained', 'vader'])
                 ]
                 X_min = X_min[columns_to_keep]
                 columns_to_keep = [
                     col for col in X_max.columns
-                    if 'bart_mnli' not in col and 'roberta_pretrained' not in col
+                    if all(i not in col for i in ['bart_mnli', 'roberta_pretrained', 'vader'])
                 ]
                 X_max = X_max[columns_to_keep]
             else:
                 columns_to_keep = [
                     col for col in data.columns
-                    if 'bart_mnli' not in col and 'roberta' not in col
+                    if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
                 ]
                 X_min = data[columns_to_keep]
                 X_max = data[columns_to_keep]

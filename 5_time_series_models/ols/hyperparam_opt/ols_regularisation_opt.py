@@ -22,6 +22,7 @@ from utils.wrappers import timeit, telegram_notify
 def ols_regularisation_opt():
     
     modes = [
+        'causal_stationary_vader',
         'causal_stationary_nlp_pretrained',
         'causal_stationary_twitter_roberta',
         'causal_stationary_bart_mnli',
@@ -116,48 +117,54 @@ def ols_regularisation_opt():
         target_path = f'../../../2_data_processing/numeric_data/{coin}_targets.parquet.gzip'
         targets = pd.read_parquet(target_path)
         
-        with open(f'../../../4_eda/{coin}_causality/{coin}_price_log_difference_causality.txt') as f:
-            price_log_difference_vars = f.read().splitlines()
-            
         if args.mode == 'causal_nonstationary':
-            l = []
-            for i in price_log_difference_vars:
-                updated_var_name = re.sub(r'_d\d*_', '_', i)
-                l.append(updated_var_name)
-            price_log_difference_vars = l
+            with open(f'../../../4_eda/{coin}_causality_nonstat/{coin}_price_log_difference_causality.txt') as f:
+                price_log_difference_vars = f.read().splitlines()
+        else:
+            with open(f'../../../4_eda/{coin}_causality/{coin}_price_log_difference_causality.txt') as f:
+                price_log_difference_vars = f.read().splitlines()
         
         # Select only the desired explanatory variables
         if args.mode in ['causal_stationary_no_nlp', 'causal_nonstationary']:
             X = data[price_log_difference_vars]
             columns_to_keep = [
                 col for col in X.columns
-                if 'bart_mnli' not in col and 'roberta' not in col
+                if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
+            ]
+            X = X[columns_to_keep]
+        elif args.mode == 'causal_stationary_vader':
+            X = data[price_log_difference_vars]
+            columns_to_keep = [
+                col for col in X.columns
+                if all(i not in col for i in ['bart_mnli', 'roberta'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_twitter_roberta':
             X = data[price_log_difference_vars]
             columns_to_keep = [
                 col for col in X.columns
-                if 'finetuned' not in col and 'bart_mnli' not in col
+                if all(i not in col for i in ['finetuned', 'bart_mnli', 'vader'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_bart_mnli':
             X = data[price_log_difference_vars]
             columns_to_keep = [
-                col for col in X.columns if 'roberta' not in col
+                col for col in X.columns
+                if all(i not in col for i in ['roberta', 'vader'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_nlp_pretrained':
             X = data[price_log_difference_vars]
             columns_to_keep = [
-                col for col in X.columns if 'finetuned' not in col
+                col for col in X.columns
+                if all(i not in col for i in ['finetuned', 'vader'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_nlp_finetuned':
             X = data[price_log_difference_vars]
             columns_to_keep = [
                 col for col in X.columns
-                if 'bart_mnli' not in col and 'roberta_pretrained' not in col
+                if all(i not in col for i in ['bart_mnli', 'roberta_pretrained', 'vader'])
             ]
             X = X[columns_to_keep]
         elif args.mode == 'causal_stationary_full_data':
@@ -165,7 +172,7 @@ def ols_regularisation_opt():
         else:
             columns_to_keep = [
                 col for col in data.columns
-                if 'bart_mnli' not in col and 'roberta' not in col
+                if all(i not in col for i in ['bart_mnli', 'roberta', 'vader'])
             ]
             X = data[columns_to_keep]
         
