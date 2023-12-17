@@ -1,3 +1,3 @@
 # Data Acquisition
 
-This folder is not shared publicly since the code contains passwords and API keys. For further questions please enquire via e-mail.
+This directory contains scripts for interfacing with APIs to collect and preprocess data necessary for our analysis. Datasets are not included in this repository due to the use of proprietary paid APIs that prohibit data sharing.

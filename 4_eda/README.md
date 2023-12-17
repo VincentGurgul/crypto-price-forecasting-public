@@ -1,6 +1,6 @@
 # 4. Exploratory Data Analysis (EDA)
 
-This directory contains various notebooks and scripts dedicated to the exploratory data analysis of both numeric and NLP data.
+This directory contains various notebooks and scripts dedicated to the exploratory analysis of both numeric and textual data.
 
 ## Contents
 
