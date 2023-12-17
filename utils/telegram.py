@@ -2,9 +2,9 @@
 
 import requests
 
-bot_token = '<YOUR-BOT-TOKEN-HERE>'
+bot_token = '<BOT_TOKEN>'
 api_url = f'https://api.telegram.org/bot{bot_token}/'
-chat_id = '<YOUR-CHAT-ID-HERE>'
+chat_id = '<CHAT_ID>'
 
 
 def sendMessage(content):
