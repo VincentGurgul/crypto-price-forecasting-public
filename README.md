@@ -21,7 +21,7 @@ The repository contains the following directories:
 
 - <code>6_feature_importance</code>: Assessment of the feature importances using an XGBoost model trained on daily price fluctuations.
 
-- <code>documentation</code>: Documentation complementing the code. This includes the master thesis and the presentation slides from the DSSV-ECDA 2023
+- <code>documentation</code>: Documentation complementing the code. This includes the master thesis and the presentation slides from the DSSV-ECDA 2023.
 
 - <code>utils</code>: Utility scripts and helper functions used throughout the project.
 
