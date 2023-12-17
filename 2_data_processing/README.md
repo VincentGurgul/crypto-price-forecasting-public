@@ -1,6 +1,6 @@
 # Data Processing
 
-This section focuses on processing both numerical and textual data to prepare them for further exploration and modelling. Below you'll find a brief overview of the contents and their purposes. Datasets are not included in this repository due to the use of proprietary paid APIs that prohibit data sharing.
+This section focuses on processing both numerical and textual data to prepare them for further exploration and modelling.
 
 ## Contents
 
