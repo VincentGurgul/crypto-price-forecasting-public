@@ -2,8 +2,6 @@
 
 This repository encompasses the code for the processing, exploratory data analysis, model training and evaluation as well as related utilities and documentation for the forecasting of cryptocurrency prices using various deep learning and natural language processing techniques. Datasets are not included in this repository due to the use of proprietary paid APIs that prohibit data sharing.
 
-The corresponding publication can be accessed on ArXiv: https://arxiv.org/abs/2311.14759
-
 
 ## Structure
 
