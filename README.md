@@ -1,7 +1,6 @@
-# Forecasting Cryptocurrency Prices Using Deep Learning: Integrating Financial, Blockchain, and Text Data
+# Deep Learning and NLP in Cryptocurrency Forecasting: Integrating Financial, Blockchain, and Social Media Data
 
-This repository encompasses the code for the processing, exploratory data analysis, model training and evaluation as well as related utilities and documentation for the forecasting of cryptocurrency prices using various deep learning and natural language processing techniques. Datasets are not included in this repository due to the use of proprietary paid APIs that prohibit data sharing.
-
+This repository encompasses the code for the acquisition and processing of the data, exploratory data analysis, model training and evaluation as well as related utilities and documentation for the forecasting of cryptocurrency prices using various deep learning and natural language processing techniques.
 
 ## Structure
 
@@ -20,7 +19,6 @@ The repository contains the following directories:
 - <code>6_feature_importance</code>: Assessment of the feature importances using an XGBoost model trained on daily price fluctuations.
 
 - <code>utils</code>: Utility scripts and helper functions used throughout the project.
-
 
 ## Requirements
 
